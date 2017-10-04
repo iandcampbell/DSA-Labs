@@ -1,1 +1,0 @@
-A branch made from github's website, so I can showcase how to pull a remote branch to a local repository.

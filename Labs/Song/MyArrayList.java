@@ -34,7 +34,14 @@ class MyArrayList<T> implements MyList<T>{
 	/**
 	 * Returns true if the list contains specified element.
 	 */
-	public boolean contains(T o);
+	public boolean contains(T o){
+      for(int i = 0; i < playlist.length; i++){
+         if(playlist[i].equals(o)){
+            return true;
+         }
+      }
+      return false;
+   }
 	
 	/**
 	 * Returns the element located in the specified position of this list.
@@ -42,13 +49,20 @@ class MyArrayList<T> implements MyList<T>{
 	 * greater than the list size.
 	 */
 	public T get(int index){
-      return playlist[index];
+      if(index < 1 || index > playlist.length)
+         throw IndexOutOfBoundsError;
+      else return playlist[index];
+   }
 	
 	/**
 	 * Returns an index in the list of the first occurrence of the specified
 	 * element, or -1 if this list does not contain such an element.
 	 */
-	public int indexOf(T o);
+	public int indexOf(T o){
+      for (int i = 0; i < playlist.length; i++){
+         if(playlist[i].equals(o)){
+            return i;
+         else return -1;
 	
 	/**
 	 * Returns true if the list contains no elements.
@@ -72,7 +86,10 @@ class MyArrayList<T> implements MyList<T>{
 	 * provided element. This method throws an exception if position 
 	 * value is less than 1 or greater than the list size.
 	 */
-	public boolean set(int index, T element);
+	public boolean set(int index, T element){
+      if(index < 1 || index > playlist.length)
+         throw IndexOutOfBoundsError;
+      else playlist[index] = element;
 	
 	/**
 	 * Returns the number of elements in the list.

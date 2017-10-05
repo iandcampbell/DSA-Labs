@@ -1,11 +1,12 @@
-class MyArrayList<T> implements MyList<T>{
+public abstract class MyArrayList<T> implements MyList<T>{
    
+   public int maxSize = 10;
    public int size;
    public T[] playlist;
    
    public MyArrayList(){
       playlist = (T[]) new Object[1];
-      size = 10;
+      size = maxSize;
    }
    
 	/**
@@ -19,7 +20,7 @@ class MyArrayList<T> implements MyList<T>{
 	 * Appends an element to the end of the list.
 	 */
 	public boolean add(T o){
-      playlist[size] = o;
+      playlist[size-1] = o;
       size++;
       return true;
 	
@@ -67,19 +68,37 @@ class MyArrayList<T> implements MyList<T>{
 	/**
 	 * Returns true if the list contains no elements.
 	 */
-	public boolean isEmpty();
+	public boolean isEmpty(){
+      for(int i = 0; i< playlist.length; i++){
+         if(playlist[i] != null){
+            return false;
+         }
+      }
+      return true;
+   }
 	
 	/**
 	 * Removes the element at the specified position in this list This method
 	 * throws an exception if position value is less than 1 or greater than
 	 * the list size.
 	 */
-	public T remove(int index);
+	public T remove(int index){
+      T object = playlist[index];
+      playlist[index] = null;
+      return object;
+   }
 	
 	/**
 	 * Removes the first occurrence of the specified element from the list.
 	 */
-	public T remove(T o);
+	public T remove(T o){
+      T object = null;
+      for (int i = 0; i < playlist.length; i++){
+         if(playlist[i].equals(o)){
+            object = o;
+         }
+      return object;
+   }
 	
 	/**
 	 * Replaces the element in specified position in the list with the 

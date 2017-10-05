@@ -131,7 +131,15 @@ public abstract class MyArrayList<T> implements MyList<T>{
 	/**
 	 * Swaps elements of the List located in the positions 1 and 2, respectively.
 	 */
-	public boolean swap(int position1, int position2);
+	public boolean swap(int position1, int position2){
+      if(position1 > 0 && position1 < size && position2 > 0 && position2 < size){
+         T temp = playlist[position1];
+         playlist[position1] = playlist[position2];
+         playlist[position2] = temp;
+         return true;
+      }
+      else return false;
+   }
 	
 	/**
 	 * Shift all elements in the List by a specified number of locations.
@@ -139,4 +147,4 @@ public abstract class MyArrayList<T> implements MyList<T>{
 	 * from left to right. If the value of positions is negative then the
 	 * elements are shifted from right to left.
 	 */
-	public boolean shift(int positions);
+	public boolean shift(int positions)

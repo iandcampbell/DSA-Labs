@@ -122,18 +122,37 @@ public abstract class MyCircularLinkedList<T> extends MyList<T> {
 	 * the list size.
 	 */
 	public T remove(int index){
-      return remove(get(index));
+      int i = 1;
+      Node<T> temp = head;
+      while (i<index) {
+         temp = temp.next;
+         i++;
+      }
+      temp.prev.next = temp.next;
+      temp.next.prev = temp.prev;
+      temp.next = null;
+      temp.prev = null;
+      
+      return temp.data;
    }
 	
 	/**
 	 * Removes the first occurrence of the specified element from the list.
 	 */
 	public T remove(T o){
-      o.next.prev = o.prev;
-      o.prev.next = o.next;
-      size--;
-      
-      return o;
+     int i = 1;
+     Node<T> temp = head;
+     while(i<size) {
+        if (temp.data.equals(o)) {
+           temp.prev.next = temp.next;
+           temp.next.prev = temp.prev;
+           temp.next = null;
+           temp.prev = null;
+           return temp.data; 
+        }
+        i++;
+     }
+     return o; 
    }
 	
 	/**
@@ -161,13 +180,35 @@ public abstract class MyCircularLinkedList<T> extends MyList<T> {
 	 * Returns a new list that contains the portion of the original list 
 	 * between the specified fromIndex, inclusive, and toIndex, exclusive.
 	 */
-	public MyList subList(int fromIndex, int toIndex);
-	
+	public MyList<T> subList(int fromIndex, int toIndex){
+      if (fromIndex < 0 || toIndex > size || fromIndex > toIndex) {
+      throw new IndexOutOfBoundsException();
+   }
+      MyCircularLinkedList<T> subList = new MyCircularLinkedList<T>();
+      Node<T> oPoint = head.next;
+      Node<T> slPoint = subList.head;
+      int stop = fromIndex - toIndex;
+      for (int i = 0; i < stop; i++) {
+         slPoint.next = oPoint;
+         slPoint = oPoint.next;
+         oPoint = oPoint.next;
+         subList.size++;
+      }
+   
+      return subList
+	}
+   
 	/**
 	 * Returns an array containing all of the elements in the list in proper sequence.
 	 */
 	public T[] toArray(){
-      return playlist.toArray();
+      T[] newArray = (T[]) new Object[size];
+      Node<T> temp = head;
+      for (int i = 0; i < size; i++) {
+         newArray[i] = temp.data;
+         temp = temp.next;
+      }
+       return newArray;   
    }
 	
 	/**
@@ -190,6 +231,6 @@ public abstract class MyCircularLinkedList<T> extends MyList<T> {
 	 * elements are shifted from right to left.
 	 */
 	public boolean shift(int positions) {
-		
-	}
-      
+   
+   }
+}      

@@ -134,21 +134,23 @@ public abstract class MyCircularLinkedList<T> extends MyList<T> {
 	 */
 	public T remove(T o){
      int i = 1;
-     Node<T> temp = head;
-     if (temp.data.equals(o)) {
-        temp.prev.next = temp.next;
-        temp.next.prev = temp.prev;
-        temp.next = null;
-        temp.prev = null;
+     Node<T> des = head;
+     if (des.data.equals(o)) {
+        Node<T> prev = des.prev;
+        Node<T> next = des.next;
+        prev.next = next;
+        next.prev = prev;
+        size--;
         return temp.data;
      } 
      while (i < size) {
-        temp = temp.next;
-        if (temp.data.equals(o)) {
-           temp.prev.next = temp.next;
-           temp.next.prev = temp.prev;
-           temp.next = null;
-           temp.prev = null;
+        des = des.next;
+        if (des.data.equals(o)) {
+           Node<T> prev = des.prev;
+           Node<T> next = des.next;
+           prev.next = next;
+           next.prev = prev;
+           size--;
            return temp.data; 
         }
         i++;

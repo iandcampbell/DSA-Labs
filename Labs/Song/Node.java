@@ -3,9 +3,15 @@ public class Node<T> {
    public Node<T> next;
    public Node<T> prev;
    
+   public Node() {
+      this.data = null;
+      this.prev = null;
+      this.next = null;
+   }
+   
    public Node(T object) {
-      data = object;
-      next = null;
-      prev = null;
+      this.data = object;
+      this.next = null;
+      this.prev = null;
    }
 }

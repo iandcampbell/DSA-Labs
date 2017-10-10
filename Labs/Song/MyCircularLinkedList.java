@@ -1,7 +1,13 @@
 public abstract class MyCircularLinkedList<T> extends MyList<T> {
    public Node<T> head, tail;
+   int size;
    
    public MyCircularLinkedList() {
+      this.size = 0;
+      this.head = new Node<T>();
+      this.tail = new Node<T>();
+      this.head.next = this.tail;
+      this.tail.prev = this.head;
    }
    
    public MyCircularLinkedList(T[] o) {
@@ -12,44 +18,35 @@ public abstract class MyCircularLinkedList<T> extends MyList<T> {
 	 * Inserts an element at a specified position.
 	 */
 	public boolean add(int index, T o){
-      
-      if (index == 0) {
-         Node<T> node = new Node<>(o);//create a new node
-         node.next = head;//Link with the head
-         head = node; //head points to new node
-         size++;
+      if (index < 0 || index > size){
+         throw new IndexOutOfBoundsException();
       }
-      
-      else if (index >= size) {
-         Node<T> node = new Node<>(o); //Make a new node
-         
-         if (tail == null) {
-            head = tail = node; //New node is alone
-         }
-         else {
-            tail.next = node; //link node with the current tail
-            tail = tail.next; //update the tail
-         }
-         
-         size++;
+      Node<T> newNode = new Node<T>(o);
+      Node<T> pointer = head;
+      for (int i = 0; i <= index; i++) {
+         pointer = pointer.next;
       }
-      else {
-         Node<T> cur = head; //Start at the head
-         for (int i = 1; i < index; i++) {
-            cur = cur.next; //increment though the list
-         }
-         Node<T> temp = cur.next;
-         cur.next = new Node<>o;
-         (cur.next).next = temp;
-         size++;
-      }
+      Node<T> prev = pointer.prev;
+      prev.next = newNode;
+      newNode.prev = prev;
+      newNode.next = pointer;
+      pointer.prev = newNode;
+      size++;
+      return true;
 	}
 
 	/**
 	 * Appends an element to the end of the list.
 	 */
 	public boolean add(T o){
-      return add(size, o);
+      Node<T> newNode = new Node<T>(o); //Holds our object
+      Node<T> prev = tail.prev; //hold the last element next to the tail
+      prev.next = newNode; //links last element to new element
+      newNode.prev = prev; //links new element to last element
+      newNode.next = tail; //links new element to tail
+      tail.prev = newNode; //links tail to new element
+      size++;
+      return true;
    }
 	
 	/**
@@ -88,11 +85,7 @@ public abstract class MyCircularLinkedList<T> extends MyList<T> {
          for (int i = 0; i < index; i++) {
             cur = cur.next; //increment though the list
          }
-         Node<T> temp = cur.next;
-         cur.next = new Node<>o;
-         (cur.next).next = temp;
-         size++;
-      return playlist[index];
+      return cur.data;
    }
 	
 	/**
@@ -122,27 +115,35 @@ public abstract class MyCircularLinkedList<T> extends MyList<T> {
 	 * the list size.
 	 */
 	public T remove(int index){
-      int i = 1;
-      Node<T> temp = head;
-      while (i<index) {
-         temp = temp.next;
-         i++;
+      if (index < 0 || index > size)
+         throw new IndexOutOfBoundsException(index + ", " + size);
+      Node<T> des = head;
+      for (int i = 0; i <= index; i++) {
+         des = des.next;
       }
-      temp.prev.next = temp.next;
-      temp.next.prev = temp.prev;
-      temp.next = null;
-      temp.prev = null;
-      
-      return temp.data;
+      Node<T> prev = des.prev;
+      Node<T> next = des.next;
+      prev.next = next;
+      nrext.prev = prev;
+      size--;
+      return des.data;
    }
-	
+ 
 	/**
 	 * Removes the first occurrence of the specified element from the list.
 	 */
 	public T remove(T o){
      int i = 1;
      Node<T> temp = head;
-     while(i<size) {
+     if (temp.data.equals(o)) {
+        temp.prev.next = temp.next;
+        temp.next.prev = temp.prev;
+        temp.next = null;
+        temp.prev = null;
+        return temp.data;
+     } 
+     while (i < size) {
+        temp = temp.next;
         if (temp.data.equals(o)) {
            temp.prev.next = temp.next;
            temp.next.prev = temp.prev;
@@ -164,9 +165,12 @@ public abstract class MyCircularLinkedList<T> extends MyList<T> {
       if(index < 0 || index > playlist.length)
          throw IndexOutOfBoundsError;
       Node<T> cur = head;
-      o old = null;
-      for( int i = 0; i< size; i++) {
-         old = cur.Song;
+      for (int i = 0; i <= index; i++) {
+         cur = cur.next;
+      }
+      cur.daata = element;
+      return element;
+   }
       
 	
 	/**

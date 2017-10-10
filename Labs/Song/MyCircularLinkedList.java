@@ -231,6 +231,24 @@ public abstract class MyCircularLinkedList<T> extends MyList<T> {
 	 * elements are shifted from right to left.
 	 */
 	public boolean shift(int positions) {
-   
-   }
+		if(positions < 0) {
+			positions *= -1;
+			for(int i = 0, i < positions, i++) {
+				tail = tail.prev;
+				head = head.prev;
+			}
+			return true;
+		}
+		if(positions == 0) {
+			return true;
+		}
+		if(positions > 0) {
+			for(int i = 0, i < positions, i++) {
+				head = head.next;
+				tail = tail.next;
+			}
+			return true;
+		}
+		return false;
+	}
 }      

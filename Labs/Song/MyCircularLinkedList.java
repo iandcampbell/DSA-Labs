@@ -189,5 +189,7 @@ public abstract class MyCircularLinkedList<T> extends MyList<T> {
 	 * from left to right. If the value of positions is negative then the
 	 * elements are shifted from right to left.
 	 */
-	public boolean shift(int positions)
+	public boolean shift(int positions) {
+		
+	}
       

@@ -215,13 +215,39 @@ public abstract class MyCircularLinkedList<T> extends MyList<T> {
 	 * Swaps elements of the List located in the positions 1 and 2, respectively.
 	 */
 	public boolean swap(int position1, int position2){
-      if(position1 > 0 && position1 < size && position2 > 0 && position2 < size){
-         T temp = playlist[position1];
-         playlist[position1] = playlist[position2];
-         playlist[position2] = temp;
-         return true;
+      if (position1 < 0 || position1 > size || position2 < 0 || position1 > size) { //Index boundaries
+        throw new IndexOutOfBoundsException();
       }
-      else return false;
+      if (position1 > position2) { //For instance, swap index 3 for index 1, works easier as swapping index 1 for 3
+         int temp = position1;
+         position1 = position2;
+         position2 = temp;
+      }
+      int space = position1 - position2; //Increments between position 1 and 2
+      int count = 0;
+      Node<T> tempNode = head;
+      Node<T> swapOne = null; 
+      Node<T> swapTwo = null;
+      while(count < position1) { //count up to pos 1
+         tempNode = tempNode.next;
+         count++;
+      }
+     
+      count= 0;
+      swapOne = tempNode;
+      while(count < space) { //count to pos2
+          tempNode = tempNode.next;
+          count++;
+      }
+      count = 0;        //swap values
+      swapTwo = tempNode;
+      tempNode = swapOne;
+      while(space > count) {
+         tempNode = tempNode.prev;
+         space--;
+      }
+      tempNode = swapTwo;
+      return true;
    }
 	
 	/**
@@ -231,6 +257,25 @@ public abstract class MyCircularLinkedList<T> extends MyList<T> {
 	 * elements are shifted from right to left.
 	 */
 	public boolean shift(int positions) {
-   
-   }
+		if(positions < 0) {
+			positions *= -1;
+			for(int i = 0, i < positions, i++) {
+				tail = tail.prev;
+				head = head.prev;
+			}
+			return true;
+		}
+		if(positions == 0) {
+			return true;
+		}
+		if(positions > 0) {
+			for(int i = 0, i < positions, i++) {
+				head = head.next;
+				tail = tail.next;
+			}
+			return true;
+		}
+		return false;
+	}
 }      
+   

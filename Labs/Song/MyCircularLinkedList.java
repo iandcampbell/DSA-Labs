@@ -49,8 +49,8 @@ public abstract class MyCircularLinkedList<T> extends MyList<T> {
 	 * Appends an element to the end of the list.
 	 */
 	public boolean add(T o){
-      add(size, o);
-      return true;
+      return add(size, o);
+   }
 	
 	/**
 	 * Removes all elements.
@@ -58,14 +58,20 @@ public abstract class MyCircularLinkedList<T> extends MyList<T> {
 	public boolean clear(){
       size = 0;
       head = null;
+      tail = null;
    }
 	
 	/**
 	 * Returns true if the list contains specified element.
 	 */
 	public boolean contains(T o){
-      return
+      Node<T> cur = head;
+      for (int i = 0; i < size; i++) {
+         if (cur.data.equals(o))
+            return true;
+         cur = cur.next;
       }
+      
       return false;
    }
 	
@@ -78,7 +84,14 @@ public abstract class MyCircularLinkedList<T> extends MyList<T> {
       //check index bounds
       if (index < 0 || index > size)
          throw new IndexOutOfBoundsException(index + ", " + size);
-      
+      Node<T> cur = head; //Start at the head
+         for (int i = 0; i < index; i++) {
+            cur = cur.next; //increment though the list
+         }
+         Node<T> temp = cur.next;
+         cur.next = new Node<>o;
+         (cur.next).next = temp;
+         size++;
       return playlist[index];
    }
 	
@@ -87,10 +100,14 @@ public abstract class MyCircularLinkedList<T> extends MyList<T> {
 	 * element, or -1 if this list does not contain such an element.
 	 */
 	public int indexOf(T o){
-      for (int i = 0; i < size; i++){
-         if(playlist[i].equals(o)){
+      Node<T> cur = head;
+      for (int i = 0; i < size; i++) {
+         if (cur.data.equals(o))
             return i;
-         else return -1;
+         cur = cur.next;
+      }
+      return -1;
+   }
 	
 	/**
 	 * Returns true if the list contains no elements.
@@ -127,7 +144,11 @@ public abstract class MyCircularLinkedList<T> extends MyList<T> {
 	public boolean set(int index, T element){
       if(index < 0 || index > playlist.length)
          throw IndexOutOfBoundsError;
-      else playlist[index] = element;
+      Node<T> cur = head;
+      o old = null;
+      for( int i = 0; i< size; i++) {
+         old = cur.Song;
+      
 	
 	/**
 	 * Returns the number of elements in the list.

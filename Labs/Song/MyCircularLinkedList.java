@@ -277,5 +277,4 @@ public abstract class MyCircularLinkedList<T> extends MyList<T> {
 		}
 		return false;
 	}
-}      
-   
+}

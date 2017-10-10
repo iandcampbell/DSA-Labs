@@ -141,7 +141,7 @@ public abstract class MyCircularLinkedList<T> extends MyList<T> {
         prev.next = next;
         next.prev = prev;
         size--;
-        return temp.data;
+        return des.data;
      } 
      while (i < size) {
         des = des.next;
@@ -151,7 +151,7 @@ public abstract class MyCircularLinkedList<T> extends MyList<T> {
            prev.next = next;
            next.prev = prev;
            size--;
-           return temp.data; 
+           return des.data; 
         }
         i++;
      }

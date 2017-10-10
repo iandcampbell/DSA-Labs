@@ -1,12 +1,9 @@
-public abstract class MyArrayList<T> implements MyList<T>{
+public abstract class MyLinkedList<T> implements MyList<T>{
    
-   public static final int baseSize = 10;
+   public Node<T> head;
    public int size = 0;
-   public T[] playlist[baseSize];
    
    public MyArrayList(){
-      playlist = (T[]) new Object[1];
-      size = maxSize;
    }
    
    public MyArrayList(T[] o){
@@ -18,22 +15,28 @@ public abstract class MyArrayList<T> implements MyList<T>{
 	 * Inserts an element at a specified position.
 	 */
 	public boolean add(int index, T o){
-      //check index bounds
-      if (index < 0 || index > size)
-         throw new IndexOutOfBoundsException(index + ", " + size);
       
-      //check size capacity
+      if (index == 0) {
+         Node<T> node = new Node<>(o);//create a new node
+         node.next = head;//Link with the head
+         head = node; //head points to new node
+         size++;
+      }
       
-      //move elements to the right
-      for (int i = size - 1; i >= index; i--)
-         playlist[i+1] = playlist[i];
-      
-      //insert element at specific index
-      playlist[index] = o;
-      
-      //increment size
-      size++;
-	
+      else if (index >= size) {
+         Node<T> node = new Node<>(o);
+      }
+      else {
+         Node<T> cur = head;
+         for (int i = 1; i < index; i++) {
+            cur = cur.next;
+         }
+         Node<T> temp = cur.next;
+         cur.next = new Node<>o;
+         (cur.next).next = temp;
+         size++;
+      }
+	}
 
 	/**
 	 * Appends an element to the end of the list.
@@ -47,18 +50,15 @@ public abstract class MyArrayList<T> implements MyList<T>{
 	 * Removes all elements.
 	 */
 	public boolean clear(){
-      playlist = (T[]) new Object[baseSize];
       size = 0;
+      head = null;
    }
 	
 	/**
 	 * Returns true if the list contains specified element.
 	 */
 	public boolean contains(T o){
-      for(int i = 0; i < size; i++){
-         if(playlist[i].equals(o)){
-            return true;
-         }
+      return
       }
       return false;
    }

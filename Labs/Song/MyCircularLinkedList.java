@@ -1,64 +1,70 @@
-public abstract class MyArrayList<T> implements MyList<T>{
+public abstract class MyCircularLinkedList<T> extends MyList<T> {
+   public Node<T> head, tail;
    
-   public static final int baseSize = 10;
-   public int size = 0;
-   public T[] playlist[baseSize];
-   
-   public MyArrayList(){
-      playlist = (T[]) new Object[1];
-      size = maxSize;
+   public MyCircularLinkedList() {
    }
    
-   public MyArrayList(T[] o){
-      for (int i = 0; i<o.length; i++)
-         add(o[i]);
+   public MyCircularLinkedList(T[] o) {
+      super(o);
    }
-   
+
 	/**
 	 * Inserts an element at a specified position.
 	 */
 	public boolean add(int index, T o){
-      //check index bounds
-      if (index < 0 || index > size)
-         throw new IndexOutOfBoundsException(index + ", " + size);
       
-      //check size capacity
+      if (index == 0) {
+         Node<T> node = new Node<>(o);//create a new node
+         node.next = head;//Link with the head
+         head = node; //head points to new node
+         size++;
+      }
       
-      //move elements to the right
-      for (int i = size - 1; i >= index; i--)
-         playlist[i+1] = playlist[i];
-      
-      //insert element at specific index
-      playlist[index] = o;
-      
-      //increment size
-      size++;
-	
+      else if (index >= size) {
+         Node<T> node = new Node<>(o); //Make a new node
+         
+         if (tail == null) {
+            head = tail = node; //New node is alone
+         }
+         else {
+            tail.next = node; //link node with the current tail
+            tail = tail.next; //update the tail
+         }
+         
+         size++;
+      }
+      else {
+         Node<T> cur = head; //Start at the head
+         for (int i = 1; i < index; i++) {
+            cur = cur.next; //increment though the list
+         }
+         Node<T> temp = cur.next;
+         cur.next = new Node<>o;
+         (cur.next).next = temp;
+         size++;
+      }
+	}
 
 	/**
 	 * Appends an element to the end of the list.
 	 */
 	public boolean add(T o){
-      playlist[size-1] = o;
-      size++;
+      add(size, o);
       return true;
 	
 	/**
 	 * Removes all elements.
 	 */
 	public boolean clear(){
-      playlist = (T[]) new Object[baseSize];
       size = 0;
+      head = null;
    }
 	
 	/**
 	 * Returns true if the list contains specified element.
 	 */
 	public boolean contains(T o){
-      for(int i = 0; i < size; i++){
-         if(playlist[i].equals(o)){
-            return true;
-         }
+      return
       }
       return false;
    }
@@ -99,21 +105,18 @@ public abstract class MyArrayList<T> implements MyList<T>{
 	 * the list size.
 	 */
 	public T remove(int index){
-      T object = playlist[index];
-      playlist[index] = null;
-      return object;
+      return remove(get(index));
    }
 	
 	/**
 	 * Removes the first occurrence of the specified element from the list.
 	 */
 	public T remove(T o){
-      T object = null;
-      for (int i = 0; i < playlist.length; i++){
-         if(playlist[i].equals(o)){
-            object = o;
-         }
-      return object;
+      o.next.prev = o.prev;
+      o.prev.next = o.next;
+      size--;
+      
+      return o;
    }
 	
 	/**
@@ -166,3 +169,4 @@ public abstract class MyArrayList<T> implements MyList<T>{
 	 * elements are shifted from right to left.
 	 */
 	public boolean shift(int positions)
+      

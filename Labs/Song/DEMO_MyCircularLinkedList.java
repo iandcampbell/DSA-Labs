@@ -6,10 +6,14 @@ public class DEMO_MyCircularLinkedList {
       MyCircularLinkedList<Song> list = new MyCircularLinkedList<Song>();
             
       list.add(new Song("Queen", "Killer Queen", 1));
-      
+      list.add(new Song("Bee", "Killer Queen", 1));
+      System.out.println(list.size());
+      System.out.println(list.get(0).toString());
+      System.out.println(list.get(1).toString());
+      /*
       for (int i = 0; i < 200; i++) {
          list.add(new Song("TMBG", "Older", 3));
-         System.out.println(list.));
+         System.out.println(list.indexOf(new Song("TMBG", "Older", 3)));
       }
       System.out.println(list.get(1).toString());
       for (int i = 0; i < list.size(); i++) {
@@ -17,5 +21,6 @@ public class DEMO_MyCircularLinkedList {
                             list.get(i).getSongName() + ", " +
                             list.get(i).getPlayTime() + "\n");
       }
+      */
    }
 }

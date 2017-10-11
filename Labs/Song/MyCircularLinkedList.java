@@ -32,29 +32,23 @@ public class MyCircularLinkedList<T> implements MyList<T> {
                tail = tail.next;
             }
             size++;
-            return true;
          }
          else {
             Node<T> newNode = new Node<T>(o);
-            if (size == 0) {
-               newNode.next = head;
-               head = newNode;
-               size++;
+            Node<T> cur = head;
+            for (int i = 0; i<= index; i++) {
+               cur = cur.next;
             }
-            else {
-               Node<T> cur = head;
-               for( int i = 0; i < index; i++) {
-                  cur = cur.next;
-               }
-               Node<T> temp = cur.next;
-               cur.next = newNode;
-               cur.next.next = temp;
-               size++;
-            }
+            Node<T> prev = newNode.prev;
+            newNode.prev = prev;
+            newNode.next = cur;
+            cur.prev = newNode;
+            size++;
          }
-        return true;
-     }
-}
+      }   
+      return true;   
+   }
+
 
 	/**
 	 * Appends an element to the end of the list.
@@ -66,13 +60,19 @@ public class MyCircularLinkedList<T> implements MyList<T> {
          newNode.next = head;
          head = newNode;
          size++;
+         if (tail == null) {
+            tail = head;
+         }
       }
       else {
-         Node<T> prev = tail.prev; //hold the last element next to the tail
-         prev.next = newNode; //links last element to new element
-         newNode.prev = prev; //links new element to last element
-         newNode.next = tail; //links new element to tail
-         tail.prev = newNode; //links tail to new element
+         if (tail == null) {
+            head = tail = newNode;
+         }
+         else {
+            tail.next = newNode;
+            tail = tail.next;
+         }
+         
          size++;
       }
       return true;
@@ -125,6 +125,7 @@ public class MyCircularLinkedList<T> implements MyList<T> {
 	public int indexOf(T o){
       Node<T> cur = head;
       for (int i = 0; i < size; i++) {
+         System.out.println(cur.data.toString() + "** index: " + i);
          if (cur.data.equals(o))
             return i;
          cur = cur.next;

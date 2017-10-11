@@ -18,27 +18,43 @@ public class MyCircularLinkedList<T> implements MyList<T> {
 	 * Inserts an element at a specified position.
 	 */
 	public boolean add(int index, T o){
-      if (index < 0 || index > size){
+      if (index < 0 ){
          throw new IndexOutOfBoundsException("Index: " + index + ", Size: " + size);
-      }
-      Node<T> newNode = new Node<T>(o);
-      if (size == 0) {
-         newNode.next = head;
-         head = newNode;
-         size++;
-      }
-      else {
-         Node<T> cur = head;
-         for( int i = 0; i < index; i++) {
-            cur = cur.next;
+      }         
+      if (this.indexOf(o) != -1) {
+         if (index >= size) {
+            Node<T> newNode = new Node<T>(o);
+            if (tail == null) {
+               head = tail = newNode;
+            }
+            else {
+               tail.next = newNode;
+               tail = tail.next;
+            }
+            size++;
+            return true;
          }
-         Node<T> temp = cur.next;
-         cur.next = newNode;
-         cur.next.next = temp;
-         size++;
-      }
-      return true;
-	}
+         else {
+            Node<T> newNode = new Node<T>(o);
+            if (size == 0) {
+               newNode.next = head;
+               head = newNode;
+               size++;
+            }
+            else {
+               Node<T> cur = head;
+               for( int i = 0; i < index; i++) {
+                  cur = cur.next;
+               }
+               Node<T> temp = cur.next;
+               cur.next = newNode;
+               cur.next.next = temp;
+               size++;
+            }
+         }
+        return true;
+     }
+}
 
 	/**
 	 * Appends an element to the end of the list.

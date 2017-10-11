@@ -1,4 +1,4 @@
-public abstract class MyArrayList<T> implements MyList<T>{
+public class MyArrayList<T> implements MyList<T>{
    
    public static final int baseSize = 10;
    public int size = 0;

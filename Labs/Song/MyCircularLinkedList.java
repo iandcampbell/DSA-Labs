@@ -1,4 +1,4 @@
-public abstract class MyCircularLinkedList<T> extends MyList<T> {
+public class MyCircularLinkedList<T> implements MyList<T> {
    public Node<T> head, tail;
    int size;
    
@@ -9,29 +9,34 @@ public abstract class MyCircularLinkedList<T> extends MyList<T> {
       this.head.next = this.tail;
       this.tail.prev = this.head;
    }
-   
+   /* 
    public MyCircularLinkedList(T[] o) {
       super(o);
    }
-
+   */
 	/**
 	 * Inserts an element at a specified position.
 	 */
 	public boolean add(int index, T o){
       if (index < 0 || index > size){
-         throw new IndexOutOfBoundsException();
+         throw new IndexOutOfBoundsException("Index: " + index + ", Size: " + size);
       }
       Node<T> newNode = new Node<T>(o);
-      Node<T> pointer = head;
-      for (int i = 0; i <= index; i++) {
-         pointer = pointer.next;
+      if (size == 0) {
+         newNode.next = head;
+         head = newNode;
+         size++;
       }
-      Node<T> prev = pointer.prev;
-      prev.next = newNode;
-      newNode.prev = prev;
-      newNode.next = pointer;
-      pointer.prev = newNode;
-      size++;
+      else {
+         Node<T> cur = head;
+         for( int i = 0; i < index; i++) {
+            cur = cur.next;
+         }
+         Node<T> temp = cur.next;
+         cur.next = newNode;
+         cur.next.next = temp;
+         size++;
+      }
       return true;
 	}
 
@@ -40,12 +45,20 @@ public abstract class MyCircularLinkedList<T> extends MyList<T> {
 	 */
 	public boolean add(T o){
       Node<T> newNode = new Node<T>(o); //Holds our object
-      Node<T> prev = tail.prev; //hold the last element next to the tail
-      prev.next = newNode; //links last element to new element
-      newNode.prev = prev; //links new element to last element
-      newNode.next = tail; //links new element to tail
-      tail.prev = newNode; //links tail to new element
-      size++;
+      if (size == 0)
+      {
+         newNode.next = head;
+         head = newNode;
+         size++;
+      }
+      else {
+         Node<T> prev = tail.prev; //hold the last element next to the tail
+         prev.next = newNode; //links last element to new element
+         newNode.prev = prev; //links new element to last element
+         newNode.next = tail; //links new element to tail
+         tail.prev = newNode; //links tail to new element
+         size++;
+      }
       return true;
    }
 	
@@ -56,6 +69,7 @@ public abstract class MyCircularLinkedList<T> extends MyList<T> {
       size = 0;
       head = null;
       tail = null;
+      return true;
    }
 	
 	/**
@@ -80,7 +94,7 @@ public abstract class MyCircularLinkedList<T> extends MyList<T> {
 	public T get(int index){
       //check index bounds
       if (index < 0 || index > size)
-         throw new IndexOutOfBoundsException(index + ", " + size);
+         throw new IndexOutOfBoundsException("Index: " + index + ", Size: " + size);
       Node<T> cur = head; //Start at the head
          for (int i = 0; i < index; i++) {
             cur = cur.next; //increment though the list
@@ -116,7 +130,7 @@ public abstract class MyCircularLinkedList<T> extends MyList<T> {
 	 */
 	public T remove(int index){
       if (index < 0 || index > size)
-         throw new IndexOutOfBoundsException(index + ", " + size);
+         throw new IndexOutOfBoundsException("Index: " + index + ", Size: " + size);
       Node<T> des = head;
       for (int i = 0; i <= index; i++) {
          des = des.next;
@@ -124,7 +138,7 @@ public abstract class MyCircularLinkedList<T> extends MyList<T> {
       Node<T> prev = des.prev;
       Node<T> next = des.next;
       prev.next = next;
-      nrext.prev = prev;
+      next.prev = prev;
       size--;
       return des.data;
    }
@@ -164,14 +178,14 @@ public abstract class MyCircularLinkedList<T> extends MyList<T> {
 	 * value is less than 1 or greater than the list size.
 	 */
 	public boolean set(int index, T element){
-      if(index < 0 || index > playlist.length)
-         throw IndexOutOfBoundsError;
+      if(index < 0 || index > size)
+         throw new IndexOutOfBoundsException("Index: " + index + ", Size: " + size);
       Node<T> cur = head;
       for (int i = 0; i <= index; i++) {
          cur = cur.next;
       }
-      cur.daata = element;
-      return element;
+      cur.data = element;
+      return true;
    }
       
 	
@@ -188,8 +202,8 @@ public abstract class MyCircularLinkedList<T> extends MyList<T> {
 	 */
 	public MyList<T> subList(int fromIndex, int toIndex){
       if (fromIndex < 0 || toIndex > size || fromIndex > toIndex) {
-      throw new IndexOutOfBoundsException();
-   }
+         throw new IndexOutOfBoundsException("Index: " + toIndex + ", " + fromIndex + ", Size: " + size);
+      }
       MyCircularLinkedList<T> subList = new MyCircularLinkedList<T>();
       Node<T> oPoint = head.next;
       Node<T> slPoint = subList.head;
@@ -201,7 +215,7 @@ public abstract class MyCircularLinkedList<T> extends MyList<T> {
          subList.size++;
       }
    
-      return subList
+      return subList;
 	}
    
 	/**
@@ -222,7 +236,7 @@ public abstract class MyCircularLinkedList<T> extends MyList<T> {
 	 */
 	public boolean swap(int position1, int position2){
       if (position1 < 0 || position1 > size || position2 < 0 || position1 > size) { //Index boundaries
-        throw new IndexOutOfBoundsException();
+        throw new IndexOutOfBoundsException("Index: " + position1 + ", " + position2 + ", Size: " + size);
       }
       if (position1 > position2) { //For instance, swap index 3 for index 1, works easier as swapping index 1 for 3
          int temp = position1;
@@ -265,9 +279,9 @@ public abstract class MyCircularLinkedList<T> extends MyList<T> {
 	public boolean shift(int positions) {
 		if(positions < 0) {
 			positions *= -1;
-			for(int i = 0, i < positions, i++) {
-				tail = tail.prev;
-				head = head.prev;
+			for(int i = 0; i < positions; i++) {
+				this.tail = tail.prev;
+				this.head = head.prev;
 			}
 			return true;
 		}
@@ -275,7 +289,7 @@ public abstract class MyCircularLinkedList<T> extends MyList<T> {
 			return true;
 		}
 		if(positions > 0) {
-			for(int i = 0, i < positions, i++) {
+			for(int i = 0; i < positions; i++) {
 				head = head.next;
 				tail = tail.next;
 			}

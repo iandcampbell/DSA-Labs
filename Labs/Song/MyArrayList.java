@@ -1,14 +1,15 @@
-public class MyArrayList<T> implements MyList<T>{
+
+public class MyArrayList<T> implements MyList<T> {
    
    public static final int baseSize = 10;
    public int size = 0;
-   public T[] playlist[baseSize];
+   public T[] playlist = (T[])new Object[baseSize];
    
    public MyArrayList(){
-      playlist = (T[]) new Object[1];
-      size = maxSize;
+      playlist = (T[])new Object[baseSize];
+      size = 0;
    }
-   
+  
    public MyArrayList(T[] o){
       for (int i = 0; i<o.length; i++)
          add(o[i]);
@@ -17,31 +18,46 @@ public class MyArrayList<T> implements MyList<T>{
 	/**
 	 * Inserts an element at a specified position.
 	 */
-	public boolean add(int index, T o){
-      //check index bounds
-      if (index < 0 || index > size)
-         throw new IndexOutOfBoundsException(index + ", " + size);
+	public boolean add(int index, T o) {
+      if (index < 0 || index > playlist.length) {
+         throw new IndexOutOfBoundsException("Index: " + index + ", Size: " + size);
+      }
+      if (size >= playlist.length) {
+         T[] newArray = (T[])new Object[size*2];
+         newArray = playlist.clone();
+         playlist = newArray;
+      }
       
-      //check size capacity
+      for (int i = size; i > index; i--) {
+         playlist[i] = playlist[i-1];
+      }
       
-      //move elements to the right
-      for (int i = size - 1; i >= index; i--)
-         playlist[i+1] = playlist[i];
-      
-      //insert element at specific index
       playlist[index] = o;
       
-      //increment size
       size++;
+      return true;
+   }
+      
 	
 
 	/**
 	 * Appends an element to the end of the list.
 	 */
 	public boolean add(T o){
-      playlist[size-1] = o;
+      if (size >= playlist.length) {
+         T[] newArray = (T[])new Object[size*2+1];
+         for (int i = 0; i < playlist.length; i++) {
+            newArray[i] = playlist[i];
+         }
+         playlist = newArray;
+      }
+      if (size ==0){
+         playlist[size] = o;
+      }
+      else playlist[size-1] = o;
       size++;
       return true;
+   }
 	
 	/**
 	 * Removes all elements.
@@ -49,6 +65,7 @@ public class MyArrayList<T> implements MyList<T>{
 	public boolean clear(){
       playlist = (T[]) new Object[baseSize];
       size = 0;
+      return true;
    }
 	
 	/**
@@ -82,9 +99,12 @@ public class MyArrayList<T> implements MyList<T>{
 	 */
 	public int indexOf(T o){
       for (int i = 0; i < size; i++){
-         if(playlist[i].equals(o)){
+         if (playlist[i].equals(o)){
             return i;
-         else return -1;
+         }
+      }
+      return -1;
+   }
 	
 	/**
 	 * Returns true if the list contains no elements.
@@ -99,8 +119,18 @@ public class MyArrayList<T> implements MyList<T>{
 	 * the list size.
 	 */
 	public T remove(int index){
+      //check index bounds
+      if (index < 0 || index > size)
+         throw new IndexOutOfBoundsException(index + ", " + size);
       T object = playlist[index];
-      playlist[index] = null;
+      
+      for (int i = index; i < size; i++) {
+         playlist[i] = playlist[i+1];
+      }
+      
+      playlist[size-1] = null;
+      size--;
+      
       return object;
    }
 	
@@ -109,10 +139,20 @@ public class MyArrayList<T> implements MyList<T>{
 	 */
 	public T remove(T o){
       T object = null;
+      int index = -1;
       for (int i = 0; i < playlist.length; i++){
          if(playlist[i].equals(o)){
             object = o;
+            index = i;
          }
+      }      
+      for (int i = index; i < playlist.length; i++) {
+         playlist[i] = playlist[i+1];
+      }
+      
+      playlist[size-1] = null;
+      size--;
+      
       return object;
    }
 	
@@ -123,8 +163,15 @@ public class MyArrayList<T> implements MyList<T>{
 	 */
 	public boolean set(int index, T element){
       if(index < 0 || index > playlist.length)
-         throw IndexOutOfBoundsError;
-      else playlist[index] = element;
+         throw new IndexOutOfBoundsException("Index: " + index + ", Size: " + size);
+      if (size >= playlist.length) {
+         T[] newArray = (T[])new Object[size*2];
+         newArray = playlist.clone();
+         playlist = newArray;
+      }
+      playlist[index] = element;
+      return true;
+   }
 	
 	/**
 	 * Returns the number of elements in the list.
@@ -137,26 +184,35 @@ public class MyArrayList<T> implements MyList<T>{
 	 * Returns a new list that contains the portion of the original list 
 	 * between the specified fromIndex, inclusive, and toIndex, exclusive.
 	 */
-	public MyList subList(int fromIndex, int toIndex);
+	public MyList subList(int fromIndex, int toIndex){
+      if (fromIndex < 0 || toIndex > size || fromIndex >= toIndex) {
+         throw new IndexOutOfBoundsException("Index: " + fromIndex + ", " + toIndex + ", Size: " + size);
+      }
+      T[] subArray = (T[])new Object[toIndex - fromIndex + 1];
+      for (int i = toIndex; i <= fromIndex; i++) {
+         subArray[i] = playlist[i];
+      }
+      MyArrayList<T> subList = new MyArrayList<T>(subArray);
+      return subList;
+   }
 	
 	/**
 	 * Returns an array containing all of the elements in the list in proper sequence.
 	 */
 	public T[] toArray(){
-      return playlist.toArray();
+      return playlist;
    }
 	
 	/**
 	 * Swaps elements of the List located in the positions 1 and 2, respectively.
 	 */
 	public boolean swap(int position1, int position2){
-      if(position1 > 0 && position1 < size && position2 > 0 && position2 < size){
-         T temp = playlist[position1];
-         playlist[position1] = playlist[position2];
-         playlist[position2] = temp;
-         return true;
-      }
-      else return false;
+      if (position1 < 0 || position1 > size || position2 < 0 || position2 > size)
+         throw new IndexOutOfBoundsException("Index: " + position1 + ", " + position2  + ", Size: " + size);
+      T temp = playlist[position1];
+      playlist[position1] = playlist[position2];
+      playlist[position2] = temp;
+      return true;
    }
 	
 	/**
@@ -166,5 +222,25 @@ public class MyArrayList<T> implements MyList<T>{
 	 * elements are shifted from right to left.
 	 */
 	public boolean shift(int positions) {
-      
+      if (positions > 0) {
+         if (positions > size) {
+            positions = positions % size;
+         }
+         T[] newArray = (T[])new Object[playlist.length];
+         for (int i = 0; i < positions; i++) {
+            newArray[i] = playlist[playlist.length-positions+i];
+         }
+         int j = 0;
+         for (int i = positions; i < playlist.length; i++) {
+            newArray[i] = playlist[j];
+            j++;
+         }
+         playlist = newArray;
+         return true;
+      }
+      else if (positions < 0) {
+         return true;
+      }
+      else return false;
    }
+}

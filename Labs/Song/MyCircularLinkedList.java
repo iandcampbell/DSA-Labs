@@ -9,6 +9,7 @@ public class MyCircularLinkedList<T> implements MyList<T> {
       this.head.next = this.tail;
       this.tail.prev = this.head;
    }
+   
    /* 
    public MyCircularLinkedList(T[] o) {
       super(o);
@@ -44,22 +45,14 @@ public class MyCircularLinkedList<T> implements MyList<T> {
 	 * Appends an element to the end of the list.
 	 */
 	public boolean add(T o){
-      Node<T> newNode = new Node<T>(o); //Holds our object
-      if (size == 0)
-      {
-         newNode.next = head;
-         head = newNode;
-         size++;
-      }
-      else {
-         Node<T> prev = tail.prev; //hold the last element next to the tail
-         prev.next = newNode; //links last element to new element
-         newNode.prev = prev; //links new element to last element
-         newNode.next = tail; //links new element to tail
-         tail.prev = newNode; //links tail to new element
-         size++;
-      }
-      return true;
+      Node<T> nodeToAdd = new Node<T>(o);
+		Node<T> prev = tail.prev;
+		prev.next = nodeToAdd;
+		nodeToAdd.prev = prev;
+		nodeToAdd.next = tail;
+		tail.prev = nodeToAdd;
+		size++;
+		return true;
    }
 	
 	/**

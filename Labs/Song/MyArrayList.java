@@ -141,19 +141,13 @@ public class MyArrayList<T> implements MyList<T> {
       T object = null;
       int index = -1;
       for (int i = 0; i < playlist.length; i++){
+         System.out.println(i);
          if(playlist[i].equals(o)){
-            object = o;
-            index = i;
+            return this.remove(i);
          }
       }      
-      for (int i = index; i < playlist.length; i++) {
-         playlist[i] = playlist[i+1];
-      }
       
-      playlist[size-1] = null;
-      size--;
-      
-      return object;
+      return null;
    }
 	
 	/**

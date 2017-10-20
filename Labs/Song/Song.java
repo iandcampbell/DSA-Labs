@@ -12,7 +12,7 @@ public class Song
    
    public String toString()
    {
-      return ("song: " + name + ", artist: " + artist + ", playtime: " + playtime);
+      return ("Song Name: " + name + ", Artist: " + artist + ", Playtime: " + playtime);
    }
    
    public double getPlayTime()
@@ -36,6 +36,7 @@ public class Song
       //Compare object to this Song instance
       if(o == this)
          return true;
+         
       //Check if o is a Song object.
       if (!(o instanceof Song))
       {
@@ -44,7 +45,10 @@ public class Song
       
       //typecast o to Song
       Song s = (Song) o;
-      
-      return name.equals(s.name) == true && artist.equals(s.artist) == true && Float.compare(playtime, s.playtime) == 0;
+      if ((name.equals(s.name) == true) && (artist.equals(s.artist) == true) && (Float.compare(playtime, s.playtime) == 0)){
+         return true;
+      } else {
+         return false;
+      }
    }
  }

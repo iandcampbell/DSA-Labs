@@ -7,7 +7,9 @@ public class MyCircularLinkedList<T> implements MyList<T> {
       this.head = new Node<T>();
       this.tail = new Node<T>();
       this.head.next = this.tail;
+      this.head.prev = this.tail;
       this.tail.prev = this.head;
+      this.tail.next = this.head;
    }
    
    /* 

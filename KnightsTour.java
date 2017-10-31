@@ -10,7 +10,7 @@ public class KnightsTour {
 	
 	//Default Constructor for KnightsTour
 	public KnightsTour() {
-		n = 8;
+		n = 8;    //The size of a normal chess board
 	}
 	
 	//Constructor for KnightsTour that solves for an

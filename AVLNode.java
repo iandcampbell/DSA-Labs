@@ -9,6 +9,8 @@ public class AVLNode {
 		public AVLNode leftNode; 
 		public AVLNode rightNode;
 		public AVLNode parent;
+		public int height;
+		public int balance;
 		
 		//default constructor
 		public AVLNode() {
